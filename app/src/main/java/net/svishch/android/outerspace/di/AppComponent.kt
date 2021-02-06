@@ -14,22 +14,15 @@ import javax.inject.Singleton
         ApiModule::class,
         AppModule::class,
         DatabaseModule::class,
-        CiceroneModule::class,
-        RepoModule::class
+        CiceroneModule::class
     ]
 )
 interface AppComponent {
 
     fun inject(mainActivity: MainActivity)
     fun inject(mainPresenter: MainPresenter)
-    fun inject(usersPresenter: MarsPhotosPresenter)
+    fun inject(photosPresenter: MarsPhotosPresenter)
 
     fun inject(modelDataProviders: ModelDataProviders)
 
-    /*
-    fun inject(usersPresenter: UsersPresenter)
-    fun inject(repoPresenter: RepoPresenter)
-    fun inject(infoPresenter: InfoPresenter)
-
-    */
 }
