@@ -1,5 +1,6 @@
 package net.svishch.android.outerspace.mvp.presenter
 
+import android.os.Bundle
 import android.util.Log
 import io.reactivex.rxjava3.core.Scheduler
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -9,6 +10,7 @@ import net.svishch.android.outerspace.mvp.model.api.nasa.entity.mars.Photo
 import net.svishch.android.outerspace.mvp.presenter.list.IMarsPhotosListPresenter
 import net.svishch.android.outerspace.mvp.view.MarsPhotosView
 import net.svishch.android.outerspace.mvp.view.list.MarsPhotosItemView
+import net.svishch.android.outerspace.navigation.Screens
 import ru.terrakok.cicerone.Router
 import javax.inject.Inject
 
@@ -18,6 +20,7 @@ class MarsPhotosPresenter(
 ) : MvpPresenter<MarsPhotosView>() {
 
     private val TAG = "MarsPhotosPresenter"
+    private val bundle = Bundle()
 
     @Inject
     lateinit var router: Router
@@ -27,6 +30,12 @@ class MarsPhotosPresenter(
         super.onFirstViewAttach()
         viewState.init()
         loadData()
+
+        // Показать подробно
+        marsPhotosListPresenter.itemClickListener = { itemView ->
+            {}
+            router.navigateTo(Screens.PhotoScreens(marsPhotosListPresenter.photos[itemView.pos]))
+        }
     }
 
     private fun loadData() {
@@ -42,6 +51,8 @@ class MarsPhotosPresenter(
             })
 
     }
+
+    fun getBundle() = bundle
 
     fun backPressed(): Boolean {
         router.exit()
