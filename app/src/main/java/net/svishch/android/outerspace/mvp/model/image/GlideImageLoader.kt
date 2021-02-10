@@ -1,4 +1,4 @@
-package net.svishch.android.outerspace.ui.image
+package net.svishch.android.outerspace.mvp.model.image
 
 import android.widget.ImageView
 import com.bumptech.glide.Glide

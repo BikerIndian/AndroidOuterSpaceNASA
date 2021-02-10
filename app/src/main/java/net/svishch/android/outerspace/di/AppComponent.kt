@@ -5,6 +5,7 @@ import net.svishch.android.outerspace.di.modules.*
 import net.svishch.android.outerspace.mvp.model.ModelDataProviders
 import net.svishch.android.outerspace.mvp.presenter.MainPresenter
 import net.svishch.android.outerspace.mvp.presenter.MarsPhotosPresenter
+import net.svishch.android.outerspace.mvp.presenter.PhotoPresenter
 import net.svishch.android.outerspace.ui.MainActivity
 import javax.inject.Singleton
 
@@ -14,22 +15,16 @@ import javax.inject.Singleton
         ApiModule::class,
         AppModule::class,
         DatabaseModule::class,
-        CiceroneModule::class,
-        RepoModule::class
+        CiceroneModule::class
     ]
 )
 interface AppComponent {
 
     fun inject(mainActivity: MainActivity)
     fun inject(mainPresenter: MainPresenter)
-    fun inject(usersPresenter: MarsPhotosPresenter)
+    fun inject(marsPhotosPresenter: MarsPhotosPresenter)
+    fun inject(photoPresenter: PhotoPresenter)
 
     fun inject(modelDataProviders: ModelDataProviders)
 
-    /*
-    fun inject(usersPresenter: UsersPresenter)
-    fun inject(repoPresenter: RepoPresenter)
-    fun inject(infoPresenter: InfoPresenter)
-
-    */
 }

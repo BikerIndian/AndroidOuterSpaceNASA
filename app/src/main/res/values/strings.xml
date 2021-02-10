@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">Outer space (NASA)</string>
+
+    <string name="photo_id">Id:</string>
+    <string name="photo_camera">Camera:</string>
+    <string name="photo_rover_name">Rover name:</string>
+
 </resources>
