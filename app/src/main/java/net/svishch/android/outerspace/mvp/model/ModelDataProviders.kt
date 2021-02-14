@@ -1,5 +1,6 @@
 package net.svishch.android.outerspace.mvp.model
 
+import android.os.Bundle
 import io.reactivex.rxjava3.core.Single
 import net.svishch.android.outerspace.App
 import net.svishch.android.outerspace.mvp.model.api.nasa.entity.mars.Photos
@@ -14,6 +15,7 @@ class ModelDataProviders : ModelData {
     // Работа с данными
     @Inject
     lateinit var dataDb: DataDb
+    private val bundle = Bundle()
 
     private val dataApi: INasaMarsPhotos = RetrofitNasaPhotos(ApiHolder().api)
 
@@ -30,6 +32,7 @@ class ModelDataProviders : ModelData {
 
     }
 
+    override fun getBundle(): Bundle = bundle
 
     companion object {
         var networkStatus = false

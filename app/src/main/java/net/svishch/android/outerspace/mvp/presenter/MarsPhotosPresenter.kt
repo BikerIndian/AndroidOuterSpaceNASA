@@ -1,6 +1,5 @@
 package net.svishch.android.outerspace.mvp.presenter
 
-import android.os.Bundle
 import android.util.Log
 import io.reactivex.rxjava3.core.Scheduler
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -20,7 +19,6 @@ class MarsPhotosPresenter(
 ) : MvpPresenter<MarsPhotosView>() {
 
     private val TAG = "MarsPhotosPresenter"
-    private val bundle = Bundle()
 
     @Inject
     lateinit var router: Router
@@ -52,7 +50,7 @@ class MarsPhotosPresenter(
 
     }
 
-    fun getBundle() = bundle
+    fun getBundle() = modelData.getBundle()
 
     fun backPressed(): Boolean {
         router.exit()

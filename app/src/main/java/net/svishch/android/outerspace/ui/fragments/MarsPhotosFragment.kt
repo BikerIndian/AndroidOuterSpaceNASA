@@ -53,6 +53,7 @@ class MarsPhotosFragment() : MvpAppCompatFragment(), MarsPhotosView, BackButtonL
     }
 
     override fun onPause() {
+        super.onPause()
         presenter.getBundle()
             .putParcelable(KEY_RECYCLER_PHOTOS, rv_mars_photos.layoutManager?.onSaveInstanceState())
         super.onPause()
