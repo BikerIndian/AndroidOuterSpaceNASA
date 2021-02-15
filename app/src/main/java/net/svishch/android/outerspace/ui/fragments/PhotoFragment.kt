@@ -1,9 +1,9 @@
 package net.svishch.android.outerspace.ui.fragments
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import androidx.appcompat.app.ActionBar
+import androidx.appcompat.app.AppCompatActivity
 import kotlinx.android.synthetic.main.fragment_photo.*
 import moxy.MvpAppCompatFragment
 import moxy.ktx.moxyPresenter
@@ -34,6 +34,9 @@ class PhotoFragment() : MvpAppCompatFragment(), PhotoView, BackButtonListener {
             App.instance.appComponent.inject(this)
         }
     }
+    private lateinit var actionBar: ActionBar
+    private lateinit var photo: Photo
+    private lateinit var menu: Menu
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -43,7 +46,9 @@ class PhotoFragment() : MvpAppCompatFragment(), PhotoView, BackButtonListener {
         View.inflate(context, R.layout.fragment_photo, null)
 
     override fun init() {
-        val photo = arguments?.getParcelable<Photo>(PHOTO_ARG) as Photo
+        setHasOptionsMenu(true)
+        addBtnBack() // Кнопка назад
+        photo = arguments?.getParcelable<Photo>(PHOTO_ARG) as Photo
         photo.imgSrc?.let { setImgSrc(it) }
         setId(photo.id.toString())
         photo.camera?.fullName?.let { setCamera(it) }
@@ -68,5 +73,64 @@ class PhotoFragment() : MvpAppCompatFragment(), PhotoView, BackButtonListener {
     }
 
 
-    override fun backPressed() = presenter.backPressed()
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+        inflater.inflate(R.menu.photo_menu, menu)
+        this.menu = menu
+        setIconFavorites()
+    }
+
+    override fun backPressed(): Boolean {
+        delBtnBack()
+        return presenter.backPressed()
+    }
+
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+
+
+        return when (item.itemId) {
+
+            android.R.id.home -> {
+                backPressed()
+                true
+            }
+
+            R.id.menu_add -> {
+
+                if (photo.favorites) {
+                    photo.favorites = false
+                    setIconFavorites()
+                } else {
+                    photo.favorites = true
+                    setIconFavorites()
+                }
+
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
+    private fun setIconFavorites() {
+        var item = menu.findItem(R.id.menu_add)
+
+        if (photo.favorites) {
+            item.setIcon(R.drawable.ic_baseline_check_24)
+        } else {
+            item.setIcon(android.R.drawable.ic_menu_add)
+        }
+    }
+
+    private fun addBtnBack() {
+        actionBar = (activity as AppCompatActivity).supportActionBar!!
+        actionBar?.setHomeButtonEnabled(true)
+        actionBar?.setDisplayHomeAsUpEnabled(true)
+    }
+
+    private fun delBtnBack() {
+        actionBar?.setHomeButtonEnabled(false)
+        actionBar?.setDisplayHomeAsUpEnabled(false)
+    }
+
 }
