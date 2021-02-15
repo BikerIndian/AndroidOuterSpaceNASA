@@ -68,7 +68,7 @@ class MarsPhotosPresenter(
         override fun bindView(view: MarsPhotosItemView) {
             val photo = photos[view.pos]
 
-            val info: String = "Дата: ${photo.earthDate}"
+            val info: String = " ${photo.earthDate}"
 
             view.setInfo(info)
             photo.imgSrc?.let { view.loadImg(it) }              // проверка на null так как работат с сетью

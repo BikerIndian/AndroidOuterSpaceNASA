@@ -5,7 +5,7 @@ import android.os.Parcelable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.GridLayoutManager
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.fragment_mars_photos.*
 import moxy.MvpAppCompatFragment
@@ -47,7 +47,7 @@ class MarsPhotosFragment() : MvpAppCompatFragment(), MarsPhotosView, BackButtonL
         View.inflate(context, R.layout.fragment_mars_photos, null)
 
     override fun init() {
-        rv_mars_photos.layoutManager = LinearLayoutManager(context)
+        rv_mars_photos.layoutManager = GridLayoutManager(context, 3) // В два ряда
         adapter = MarsPhotosRVAdapter(presenter.marsPhotosListPresenter, GlideImageLoader())
         rv_mars_photos.adapter = adapter
     }
