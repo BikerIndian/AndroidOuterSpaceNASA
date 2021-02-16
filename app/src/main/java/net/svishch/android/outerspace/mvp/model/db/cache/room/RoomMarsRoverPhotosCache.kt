@@ -35,7 +35,11 @@ class RoomMarsRoverPhotosCache(var db: Database) : IMarsRoverPhotosCache {
                         photo.imgSrc ?: "",
                         photo.earthDate ?: "",
                     )
-                    dbPhotos.isFavorites = db.marsPhotosDao.findById(photo.id).isFavorites
+                    
+                    if (db.marsPhotosDao.findById(photo.id) != null) {
+                        dbPhotos.isFavorites =  db.marsPhotosDao.findById(photo.id).isFavorites
+                    }
+
                     dbPhotos
                 }
                 roomPhotos?.let { db.marsPhotosDao.insert(it) }
