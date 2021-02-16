@@ -19,7 +19,7 @@ class RoomMarsRoverPhotosCache(var db: Database) : IMarsRoverPhotosCache {
                         roomPhotos.imgSrc,
                         roomPhotos.earthDate
                     )
-                    photo.isFavorites  = roomPhotos.isFavorites
+                    photo.isFavorites = roomPhotos.isFavorites
                     photo
                 })
 
@@ -35,9 +35,9 @@ class RoomMarsRoverPhotosCache(var db: Database) : IMarsRoverPhotosCache {
                         photo.imgSrc ?: "",
                         photo.earthDate ?: "",
                     )
-                    
+
                     if (db.marsPhotosDao.findById(photo.id) != null) {
-                        dbPhotos.isFavorites =  db.marsPhotosDao.findById(photo.id).isFavorites
+                        dbPhotos.isFavorites = db.marsPhotosDao.findById(photo.id).isFavorites
                     }
 
                     dbPhotos
@@ -60,12 +60,12 @@ class RoomMarsRoverPhotosCache(var db: Database) : IMarsRoverPhotosCache {
         return Single.fromCallable {
             Photos(db.marsPhotosDao.getFavorites()
                 .map { roomPhotos ->
-                  var photo = Photo(
+                    var photo = Photo(
                         roomPhotos.id,
                         roomPhotos.imgSrc,
                         roomPhotos.earthDate
                     )
-                    photo.isFavorites  = roomPhotos.isFavorites
+                    photo.isFavorites = roomPhotos.isFavorites
                     photo
                 })
 

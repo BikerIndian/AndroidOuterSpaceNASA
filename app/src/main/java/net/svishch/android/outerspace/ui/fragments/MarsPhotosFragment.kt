@@ -51,7 +51,7 @@ class MarsPhotosFragment() : MvpAppCompatFragment(), MarsPhotosView, BackButtonL
         View.inflate(context, R.layout.fragment_mars_photos, null)
 
     override fun init() {
-        println(">>>>  INIT")
+
         setHasOptionsMenu(true)
 
         isFavorites = presenter.getBundle().getBoolean(KEY_RECYCLER_IS_FAVORITES)
