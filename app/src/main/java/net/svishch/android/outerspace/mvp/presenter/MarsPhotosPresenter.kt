@@ -72,7 +72,7 @@ class MarsPhotosPresenter(
 
             view.setInfo(info)
             photo.imgSrc?.let { view.loadImg(it) }              // проверка на null так как работат с сетью
-            view.favoritesImgOn(photo.favorites)
+            view.favoritesImgOn(photo.isFavorites)
         }
 
         fun update(photosIn: List<Photo>?) {

@@ -47,7 +47,7 @@ class PhotoFragment() : MvpAppCompatFragment(), PhotoView, BackButtonListener {
 
     override fun init() {
         setHasOptionsMenu(true)
-        addBtnBack() // Кнопка назад
+        addBtnBackInActionBar() // Кнопка назад
         photo = arguments?.getParcelable<Photo>(PHOTO_ARG) as Photo
         photo.imgSrc?.let { setImgSrc(it) }
         setId(photo.id.toString())
@@ -81,7 +81,7 @@ class PhotoFragment() : MvpAppCompatFragment(), PhotoView, BackButtonListener {
     }
 
     override fun backPressed(): Boolean {
-        delBtnBack()
+        delBtnBackInActionBar()
         return presenter.backPressed()
     }
 
@@ -98,37 +98,39 @@ class PhotoFragment() : MvpAppCompatFragment(), PhotoView, BackButtonListener {
 
             R.id.menu_add -> {
 
-                if (photo.favorites) {
-                    photo.favorites = false
+                if (photo.isFavorites) {
+                    photo.isFavorites = false
                     setIconFavorites()
                 } else {
-                    photo.favorites = true
+                    photo.isFavorites = true
                     setIconFavorites()
                 }
 
+                presenter.update(photo)
                 true
             }
             else -> super.onOptionsItemSelected(item)
         }
     }
 
+    // Меняем иконку избранного
     private fun setIconFavorites() {
         var item = menu.findItem(R.id.menu_add)
 
-        if (photo.favorites) {
+        if (photo.isFavorites) {
             item.setIcon(R.drawable.ic_baseline_check_24)
         } else {
             item.setIcon(android.R.drawable.ic_menu_add)
         }
     }
 
-    private fun addBtnBack() {
+    private fun addBtnBackInActionBar() {
         actionBar = (activity as AppCompatActivity).supportActionBar!!
         actionBar?.setHomeButtonEnabled(true)
         actionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
-    private fun delBtnBack() {
+    private fun delBtnBackInActionBar() {
         actionBar?.setHomeButtonEnabled(false)
         actionBar?.setDisplayHomeAsUpEnabled(false)
     }

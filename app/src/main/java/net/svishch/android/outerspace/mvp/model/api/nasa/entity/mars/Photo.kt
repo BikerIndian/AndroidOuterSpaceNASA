@@ -14,5 +14,5 @@ class Photo (
     @Expose var sol: Int? = null
     @Expose var camera: Camera? = null
     @Expose var rover: Rover? = null
-    var favorites : Boolean = false
+    var isFavorites : Boolean = false
 }

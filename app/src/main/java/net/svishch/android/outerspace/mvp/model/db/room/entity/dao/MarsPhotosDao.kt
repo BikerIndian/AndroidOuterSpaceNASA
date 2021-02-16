@@ -37,5 +37,5 @@ interface MarsPhotosDao {
     fun getAll() : List<RoomMarsRoverPhotos>
 
     @Query("SELECT * FROM RoomMarsRoverPhotos WHERE id = :id LIMIT 1")
-    fun findByLogin(id : String) : RoomMarsRoverPhotos
+    fun findById(id: Int?) : RoomMarsRoverPhotos
 }

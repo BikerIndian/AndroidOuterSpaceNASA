@@ -1,4 +1,4 @@
-package ru.geekbrains.githubclient.mvp.model.cache.room
+package net.svishch.android.outerspace.mvp.model.db.cache.room
 
 import io.reactivex.rxjava3.core.Single
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -31,11 +31,19 @@ class RoomMarsRoverPhotosCache(var db: Database) : IMarsRoverPhotosCache {
                     RoomMarsRoverPhotos(
                         photo.id ?: 0,
                         photo.imgSrc ?: "",
-                        photo.earthDate ?: ""
+                        photo.earthDate ?: "",
                     )
                 }
                 roomPhotos?.let { db.marsPhotosDao.insert(it) }
             }
     }
 
+    override fun updatePhoto(photo: Photo) {
+        Single.fromCallable {
+            var photoDb = db.marsPhotosDao.findById(photo.id)
+            photoDb.imgSrc = photo.imgSrc.toString()
+            photoDb.isFavorites = photo.isFavorites
+            db.marsPhotosDao.update(photoDb)
+        }.subscribeOn(Schedulers.io()).subscribe()
+    }
 }

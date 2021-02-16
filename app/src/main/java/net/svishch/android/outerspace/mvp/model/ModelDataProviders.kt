@@ -3,6 +3,7 @@ package net.svishch.android.outerspace.mvp.model
 import android.os.Bundle
 import io.reactivex.rxjava3.core.Single
 import net.svishch.android.outerspace.App
+import net.svishch.android.outerspace.mvp.model.api.nasa.entity.mars.Photo
 import net.svishch.android.outerspace.mvp.model.api.nasa.entity.mars.Photos
 import net.svishch.android.outerspace.mvp.model.network.AndroidNetworkStatus
 import retrofit.ApiHolder
@@ -33,6 +34,9 @@ class ModelDataProviders : ModelData {
     }
 
     override fun getBundle(): Bundle = bundle
+    override fun updatePhoto(photo: Photo) {
+        dataDb.updatePhoto(photo)
+    }
 
     companion object {
         var networkStatus = false
