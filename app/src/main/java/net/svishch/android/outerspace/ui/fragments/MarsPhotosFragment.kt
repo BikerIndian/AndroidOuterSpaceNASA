@@ -23,6 +23,9 @@ import net.svishch.android.outerspace.ui.adapter.MarsPhotosRVAdapter
 class MarsPhotosFragment() : MvpAppCompatFragment(), MarsPhotosView, BackButtonListener {
 
     var KEY_RECYCLER_PHOTOS = "net.svishch.android.outerspace.ui.fragments.Recycler"
+    var KEY_RECYCLER_IS_FAVORITES =
+        "net.svishch.android.outerspace.ui.fragments.MarsPhotosFragment.Favorites"
+    var isFavorites = false
 
     companion object {
         fun newInstance() = MarsPhotosFragment()
@@ -48,8 +51,12 @@ class MarsPhotosFragment() : MvpAppCompatFragment(), MarsPhotosView, BackButtonL
         View.inflate(context, R.layout.fragment_mars_photos, null)
 
     override fun init() {
+        println(">>>>  INIT")
         setHasOptionsMenu(true)
+
+        isFavorites = presenter.getBundle().getBoolean(KEY_RECYCLER_IS_FAVORITES)
         actionBar = (activity as AppCompatActivity).supportActionBar!!
+        updateActionBar()
 
         rv_mars_photos.layoutManager = GridLayoutManager(context, 3) // В два ряда
         adapter = MarsPhotosRVAdapter(presenter.marsPhotosListPresenter, GlideImageLoader())
@@ -60,7 +67,7 @@ class MarsPhotosFragment() : MvpAppCompatFragment(), MarsPhotosView, BackButtonL
         super.onPause()
         presenter.getBundle()
             .putParcelable(KEY_RECYCLER_PHOTOS, rv_mars_photos.layoutManager?.onSaveInstanceState())
-        super.onPause()
+        presenter.getBundle().putBoolean(KEY_RECYCLER_IS_FAVORITES, isFavorites)
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -72,14 +79,15 @@ class MarsPhotosFragment() : MvpAppCompatFragment(), MarsPhotosView, BackButtonL
         return when (item.itemId) {
 
             android.R.id.home -> {
-                delBtnBackInActionBar()
+                isFavorites = false
+                updateActionBar()
                 presenter.loadData(true)
                 true
             }
 
             R.id.menu_favorites_list -> {
-
-                addBtnBackInActionBar()
+                isFavorites = true
+                updateActionBar()
                 presenter.loadFavorites()
                 true
             }
@@ -96,6 +104,14 @@ class MarsPhotosFragment() : MvpAppCompatFragment(), MarsPhotosView, BackButtonL
     }
 
     override fun backPressed() = presenter.backPressed()
+
+    private fun updateActionBar() {
+        if (isFavorites) {
+            addBtnBackInActionBar()
+        } else {
+            delBtnBackInActionBar()
+        }
+    }
 
     private fun addBtnBackInActionBar() {
         actionBar?.setHomeButtonEnabled(true)
