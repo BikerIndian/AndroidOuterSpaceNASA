@@ -14,11 +14,13 @@ class RoomMarsRoverPhotosCache(var db: Database) : IMarsRoverPhotosCache {
         return Single.fromCallable {
             Photos(db.marsPhotosDao.getAll()
                 .map { roomPhotos ->
-                    Photo(
+                    var photo = Photo(
                         roomPhotos.id,
                         roomPhotos.imgSrc,
                         roomPhotos.earthDate
                     )
+                    photo.isFavorites  = roomPhotos.isFavorites
+                    photo
                 })
 
         }.subscribeOn(Schedulers.io())
@@ -28,11 +30,13 @@ class RoomMarsRoverPhotosCache(var db: Database) : IMarsRoverPhotosCache {
         photos.observeOn(Schedulers.io())
             .subscribe { photos ->
                 val roomPhotos = photos.getPhotos()?.map { photo ->
-                    RoomMarsRoverPhotos(
+                    var dbPhotos = RoomMarsRoverPhotos(
                         photo.id ?: 0,
                         photo.imgSrc ?: "",
                         photo.earthDate ?: "",
                     )
+                    dbPhotos.isFavorites = db.marsPhotosDao.findById(photo.id).isFavorites
+                    dbPhotos
                 }
                 roomPhotos?.let { db.marsPhotosDao.insert(it) }
             }
@@ -45,5 +49,22 @@ class RoomMarsRoverPhotosCache(var db: Database) : IMarsRoverPhotosCache {
             photoDb.isFavorites = photo.isFavorites
             db.marsPhotosDao.update(photoDb)
         }.subscribeOn(Schedulers.io()).subscribe()
+    }
+
+    override fun getFavorites(): Single<Photos> {
+
+        return Single.fromCallable {
+            Photos(db.marsPhotosDao.getFavorites()
+                .map { roomPhotos ->
+                  var photo = Photo(
+                        roomPhotos.id,
+                        roomPhotos.imgSrc,
+                        roomPhotos.earthDate
+                    )
+                    photo.isFavorites  = roomPhotos.isFavorites
+                    photo
+                })
+
+        }.subscribeOn(Schedulers.io())
     }
 }

@@ -8,4 +8,5 @@ interface IMarsRoverPhotosCache {
     fun getPhotos(): Single<Photos>
     fun photosUpdate(photos: Single<Photos>)
     fun updatePhoto(photo: Photo)
+    fun getFavorites(): Single<Photos>
 }

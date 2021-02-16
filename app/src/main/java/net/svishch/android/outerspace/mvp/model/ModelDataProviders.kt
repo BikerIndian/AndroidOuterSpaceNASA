@@ -20,10 +20,10 @@ class ModelDataProviders : ModelData {
 
     private val dataApi: INasaMarsPhotos = RetrofitNasaPhotos(ApiHolder().api)
 
-    override fun getMarsPhotos(): Single<Photos> {
+    override fun getMarsPhotos(isLoadDb: Boolean): Single<Photos> {
 
 
-        if (networkStatus) {
+        if (!isLoadDb && networkStatus) {
             val photos = dataApi.getPhotos()
             dataDb.photosUpdate(photos)
             return photos
@@ -36,6 +36,10 @@ class ModelDataProviders : ModelData {
     override fun getBundle(): Bundle = bundle
     override fun updatePhoto(photo: Photo) {
         dataDb.updatePhoto(photo)
+    }
+
+    override fun getFavorites(): Single<Photos> {
+        return dataDb.getFavorites()
     }
 
     companion object {

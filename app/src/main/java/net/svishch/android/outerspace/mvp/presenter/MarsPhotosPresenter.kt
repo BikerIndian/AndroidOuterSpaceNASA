@@ -27,7 +27,7 @@ class MarsPhotosPresenter(
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
         viewState.init()
-        loadData()
+        loadData(false)
 
         // Показать подробно
         marsPhotosListPresenter.itemClickListener = { itemView ->
@@ -36,9 +36,9 @@ class MarsPhotosPresenter(
         }
     }
 
-    private fun loadData() {
+    fun loadData(isLoadDb: Boolean) {
 
-        modelData.getMarsPhotos()
+        modelData.getMarsPhotos(isLoadDb)
             .subscribeOn(Schedulers.io())
             .observeOn(mainThreadScheduler)
             .subscribe({ marsPhotos ->
@@ -55,6 +55,18 @@ class MarsPhotosPresenter(
     fun backPressed(): Boolean {
         router.exit()
         return true
+    }
+
+    fun loadFavorites() {
+        modelData.getFavorites()
+            .subscribeOn(Schedulers.io())
+            .observeOn(mainThreadScheduler)
+            .subscribe({ marsPhotos ->
+                marsPhotosListPresenter.update(marsPhotos.getPhotos())
+                viewState.updateList()
+            }, {
+                Log.e(TAG, "Error: ${it.message}");
+            })
     }
 
 

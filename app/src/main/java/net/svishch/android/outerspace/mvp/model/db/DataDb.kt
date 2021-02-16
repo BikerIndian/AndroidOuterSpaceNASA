@@ -18,4 +18,6 @@ class DataDb(db: Database) {
         photosCache.updatePhoto(photo)
     }
 
+    fun getFavorites(): Single<Photos>  = photosCache.getFavorites()
+
 }

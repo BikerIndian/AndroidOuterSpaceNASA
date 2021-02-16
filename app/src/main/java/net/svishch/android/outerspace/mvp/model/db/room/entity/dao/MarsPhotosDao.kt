@@ -38,4 +38,7 @@ interface MarsPhotosDao {
 
     @Query("SELECT * FROM RoomMarsRoverPhotos WHERE id = :id LIMIT 1")
     fun findById(id: Int?) : RoomMarsRoverPhotos
+
+    @Query("SELECT * FROM RoomMarsRoverPhotos WHERE isFavorites = 1")
+    fun getFavorites(): List<RoomMarsRoverPhotos>
 }

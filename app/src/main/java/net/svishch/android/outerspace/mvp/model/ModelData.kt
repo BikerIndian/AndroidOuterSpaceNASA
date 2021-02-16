@@ -6,7 +6,8 @@ import net.svishch.android.outerspace.mvp.model.api.nasa.entity.mars.Photo
 import net.svishch.android.outerspace.mvp.model.api.nasa.entity.mars.Photos
 
 interface ModelData {
-   fun getMarsPhotos() : Single<Photos>
+   fun getMarsPhotos(isLoadDb: Boolean): Single<Photos>
    fun getBundle(): Bundle
    fun updatePhoto(photo: Photo)
+   fun getFavorites(): Single<Photos>
 }
