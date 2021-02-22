@@ -4,6 +4,8 @@ import androidx.room.Room
 import dagger.Module
 import dagger.Provides
 import net.svishch.android.outerspace.App
+import net.svishch.android.outerspace.mvp.model.ModelData
+import net.svishch.android.outerspace.mvp.model.ModelDataProviders
 import net.svishch.android.outerspace.mvp.model.db.DataDb
 import net.svishch.android.outerspace.mvp.model.db.room.Database
 import javax.inject.Singleton
@@ -20,5 +22,9 @@ class DatabaseModule {
     fun dataDb(database: Database): DataDb {
         return DataDb(database)
     }
+
+    @Singleton
+    @Provides
+    fun ModelData(): ModelData = ModelDataProviders.newInstance()
 
 }

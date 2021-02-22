@@ -7,5 +7,8 @@ import androidx.room.PrimaryKey
 class RoomMarsRoverPhotos(
     @PrimaryKey var id: Int,
     var imgSrc: String,
-    var earthDate: String
-)
+    var earthDate: String,
+
+){
+    var isFavorites: Boolean = false
+}

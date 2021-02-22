@@ -30,6 +30,16 @@ class MarsPhotosRVAdapter(
         override fun loadImg(url: String) = with(containerView) {
             imageLoader.loadInto(url, iv_img)
         }
+
+        override fun favoritesImgOn(favorites: Boolean) = with(containerView){
+
+            if (favorites) {
+                iv_img_favorites.visibility = View.VISIBLE
+            }else{
+                iv_img_favorites.visibility = View.INVISIBLE
+            }
+
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
