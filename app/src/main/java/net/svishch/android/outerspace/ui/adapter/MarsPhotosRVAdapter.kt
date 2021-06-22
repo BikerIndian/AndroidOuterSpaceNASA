@@ -32,7 +32,7 @@ class MarsPhotosRVAdapter(
         }
 
         override fun favoritesImgOn(favorites: Boolean) = with(containerView){
-
+           // @ColorRes var fillColorRes: Int = R.color.color_white
             if (favorites) {
                 iv_img_favorites.visibility = View.VISIBLE
             }else{

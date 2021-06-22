@@ -8,6 +8,7 @@
         android:id="@+id/rv_mars_photos"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="@color/grey"
         android:paddingTop="16dp"
         android:clipToPadding="false"
         android:paddingBottom="16dp" />

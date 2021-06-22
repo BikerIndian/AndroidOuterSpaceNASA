@@ -30,6 +30,7 @@ class MarsPhotosFragment() : MvpAppCompatFragment(), MarsPhotosView, BackButtonL
     companion object {
         fun newInstance() = MarsPhotosFragment()
     }
+    var spanCount = 2 // В два ряда
 
     val presenter: MarsPhotosPresenter by moxyPresenter {
         MarsPhotosPresenter(
@@ -58,7 +59,8 @@ class MarsPhotosFragment() : MvpAppCompatFragment(), MarsPhotosView, BackButtonL
         actionBar = (activity as AppCompatActivity).supportActionBar!!
         updateActionBar()
 
-        rv_mars_photos.layoutManager = GridLayoutManager(context, 3) // В два ряда
+
+        rv_mars_photos.layoutManager = GridLayoutManager(context, spanCount)
         adapter = MarsPhotosRVAdapter(presenter.marsPhotosListPresenter, GlideImageLoader())
         rv_mars_photos.adapter = adapter
     }
