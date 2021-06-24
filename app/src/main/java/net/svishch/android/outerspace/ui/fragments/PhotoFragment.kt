@@ -34,7 +34,7 @@ class PhotoFragment() : MvpAppCompatFragment(), PhotoView, BackButtonListener {
             App.instance.appComponent.inject(this)
         }
     }
-    private lateinit var actionBar: ActionBar
+    private var actionBar: ActionBar? = null
     private lateinit var photo: Photo
     private lateinit var menu: Menu
 
@@ -125,7 +125,9 @@ class PhotoFragment() : MvpAppCompatFragment(), PhotoView, BackButtonListener {
     }
 
     private fun addBtnBackInActionBar() {
-        actionBar = (activity as AppCompatActivity).supportActionBar!!
+        if(activity is AppCompatActivity){
+            actionBar = (activity as AppCompatActivity).supportActionBar!!
+        }
         actionBar?.setHomeButtonEnabled(true)
         actionBar?.setDisplayHomeAsUpEnabled(true)
     }

@@ -42,7 +42,7 @@ class MarsPhotosFragment() : MvpAppCompatFragment(), MarsPhotosView, BackButtonL
     }
 
     var adapter: MarsPhotosRVAdapter? = null
-    private lateinit var actionBar: ActionBar
+    private var actionBar: ActionBar? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -56,7 +56,8 @@ class MarsPhotosFragment() : MvpAppCompatFragment(), MarsPhotosView, BackButtonL
         setHasOptionsMenu(true)
 
         isFavorites = presenter.getBundle().getBoolean(KEY_RECYCLER_IS_FAVORITES)
-        actionBar = (activity as AppCompatActivity).supportActionBar!!
+        setActionBar()
+
         updateActionBar()
 
 
@@ -65,6 +66,13 @@ class MarsPhotosFragment() : MvpAppCompatFragment(), MarsPhotosView, BackButtonL
         rv_mars_photos.adapter = adapter
     }
 
+    fun setActionBar(){
+
+        if(activity is AppCompatActivity){
+            actionBar = (activity as AppCompatActivity).supportActionBar!!
+        }
+
+    }
     override fun onPause() {
         super.onPause()
         presenter.getBundle()
