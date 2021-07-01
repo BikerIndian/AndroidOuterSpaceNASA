@@ -14,6 +14,7 @@ import net.svishch.android.outerspace.App
 import net.svishch.android.outerspace.R
 import net.svishch.android.outerspace.mvp.model.ModelDataProviders
 import net.svishch.android.outerspace.mvp.model.image.GlideImageLoader
+import net.svishch.android.outerspace.mvp.presenter.MarsPhotosListPresenter
 import net.svishch.android.outerspace.mvp.presenter.MarsPhotosPresenter
 import net.svishch.android.outerspace.mvp.view.MarsPhotosView
 import net.svishch.android.outerspace.ui.BackButtonListener
@@ -35,7 +36,8 @@ class MarsPhotosFragment() : MvpAppCompatFragment(), MarsPhotosView, BackButtonL
     val presenter: MarsPhotosPresenter by moxyPresenter {
         MarsPhotosPresenter(
             AndroidSchedulers.mainThread(),
-            ModelDataProviders.newInstance()
+            ModelDataProviders.newInstance(),
+            MarsPhotosListPresenter()
         ).apply {
             App.instance.appComponent.inject(this)
         }

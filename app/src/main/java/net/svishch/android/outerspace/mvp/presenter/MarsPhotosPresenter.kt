@@ -1,28 +1,29 @@
 package net.svishch.android.outerspace.mvp.presenter
 
-import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import io.reactivex.rxjava3.core.Scheduler
 import io.reactivex.rxjava3.schedulers.Schedulers
 import moxy.MvpPresenter
 import net.svishch.android.outerspace.mvp.model.ModelData
-import net.svishch.android.outerspace.mvp.model.api.nasa.entity.mars.Photo
-import net.svishch.android.outerspace.mvp.presenter.list.IMarsPhotosListPresenter
 import net.svishch.android.outerspace.mvp.view.MarsPhotosView
-import net.svishch.android.outerspace.mvp.view.list.MarsPhotosItemView
 import net.svishch.android.outerspace.navigation.Screens
 import ru.terrakok.cicerone.Router
 import javax.inject.Inject
 
 class MarsPhotosPresenter(
     private val mainThreadScheduler: Scheduler,
-    private val modelData: ModelData
+    private val modelData: ModelData,
+    val marsPhotosListPresenter: MarsPhotosListPresenter
 ) : MvpPresenter<MarsPhotosView>() {
 
     private val TAG = "MarsPhotosPresenter"
 
+    private val _liveData = MutableLiveData<ScreenState>()
+    private val liveData: LiveData<ScreenState> = _liveData
+
     @Inject
     lateinit var router: Router
-    val marsPhotosListPresenter = MarsPhotosListPresenter()
 
     override fun onFirstViewAttach() {
         super.onFirstViewAttach()
@@ -45,7 +46,7 @@ class MarsPhotosPresenter(
                 marsPhotosListPresenter.update(marsPhotos.getPhotos())
                 viewState.updateList()
             }, {
-                Log.e(TAG, "Error: ${it.message}");
+                _liveData.value = it.message?.let { it1 -> ScreenState.Error(it1) }
             })
 
     }
@@ -65,33 +66,16 @@ class MarsPhotosPresenter(
                 marsPhotosListPresenter.update(marsPhotos.getPhotos())
                 viewState.updateList()
             }, {
-                Log.e(TAG, "Error: ${it.message}");
+                _liveData.value = it.message?.let { it1 -> ScreenState.Error(it1) }
             })
     }
 
 
-    class MarsPhotosListPresenter : IMarsPhotosListPresenter {
-        val photos = mutableListOf<Photo>()
+    fun subscribeToLiveData() = liveData
 
-        override var itemClickListener: ((MarsPhotosItemView) -> Unit)? = null
-
-        override fun getCount() = photos.size
-
-        override fun bindView(view: MarsPhotosItemView) {
-            val photo = photos[view.pos]
-
-            val info: String = " ${photo.earthDate}"
-
-            view.setInfo(info)
-            photo.imgSrc?.let { view.loadImg(it) }              // проверка на null так как работат с сетью
-            view.favoritesImgOn(photo.isFavorites)
-        }
-
-        fun update(photosIn: List<Photo>?) {
-            photos.clear()
-            photosIn?.let { photos.addAll(it) }
-        }
-    }
 
 }
 
+sealed class ScreenState {
+    data class Error(val error: String) : ScreenState()
+}
